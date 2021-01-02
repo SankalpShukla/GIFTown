@@ -15,7 +15,8 @@ function Giphy(){
             try{
             const results =await axios("https://api.giphy.com/v1/gifs/trending", {
                 params: {
-                    api_key: "K69J6oOK6EbZ4xci6i7kR5BMtuJA6HQ7"
+                    api_key: "K69J6oOK6EbZ4xci6i7kR5BMtuJA6HQ7",
+                    limit: 10
                 }
             });
         console.log(results);
@@ -59,6 +60,7 @@ function Giphy(){
                 const results =await axios("https://api.giphy.com/v1/gifs/search", {
                     params: {
                         api_key: "K69J6oOK6EbZ4xci6i7kR5BMtuJA6HQ7",
+                        limit: 10,
                         q: search
                     }
                 });
@@ -70,7 +72,36 @@ function Giphy(){
             }
             setIsLoading(false);
             };
-        
+            function Counter() {
+                
+                const [count, setCount] = useState(10);
+                setCount(count+10)
+                
+              }    
+        const HandleLoad=async event=>{
+            event.preventDefault()
+            setIsError(false)
+            setIsLoading(true)
+             
+            Counter()  
+            try{
+                const results =await axios("https://api.giphy.com/v1/gifs/trending", {
+                    params: {
+                        api_key: "K69J6oOK6EbZ4xci6i7kR5BMtuJA6HQ7",
+                        limit: count,
+                        q: search
+                    }
+                });
+            console.log(results);
+            setData(results.data.data);}
+            catch (err){
+                setIsError(true)
+                setTimeout(()=> setIsError(false),4000)
+            }
+            setIsLoading(false);    
+              
+        };
+            
     
     return(<div className="m-2">
         {renderError()}
@@ -79,6 +110,9 @@ function Giphy(){
             <button onClick={handleClick} type="submit" className="btn btn-success mx-2" style={{display: "inline-block"}}>Search</button>
         </form>
         <div className ="container gifs">{renderGifs()}</div>
+        <form className="form-inline justify-content-center m-2" style={{display: "inline-block"}}>
+        <button onClick={HandleLoad} type="submit" className="btn btn-primary mx-2" style={{display: "inline-block"}}>Load More</button>
+        </form>
         </div>
     );
 }
