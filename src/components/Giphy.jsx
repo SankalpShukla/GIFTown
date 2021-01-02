@@ -8,6 +8,7 @@ function Giphy(){
     const[search, setSearch]=useState("");
     const[ isLoading, setIsLoading]=useState(false);
     const[isError, setIsError]=useState(false);
+    const [count, setCount] = useState(10);
     useEffect(()=>{
         const fetchData = async()=>{
             setIsError(false);
@@ -74,21 +75,22 @@ function Giphy(){
             };
             function Counter() {
                 
-                const [count, setCount] = useState(10);
+                
                 setCount(count+10)
                 
+            
+                
               }    
-        const HandleLoad=async event=>{
+        const handleLoad=async event=>{
             event.preventDefault()
             setIsError(false)
             setIsLoading(true)
-             
             Counter()  
             try{
                 const results =await axios("https://api.giphy.com/v1/gifs/trending", {
                     params: {
                         api_key: "K69J6oOK6EbZ4xci6i7kR5BMtuJA6HQ7",
-                        limit: count,
+                        limit: count+10,
                         q: search
                     }
                 });
@@ -111,7 +113,7 @@ function Giphy(){
         </form>
         <div className ="container gifs">{renderGifs()}</div>
         <form className="form-inline justify-content-center m-2" style={{display: "inline-block"}}>
-        <button onClick={HandleLoad} type="submit" className="btn btn-primary mx-2" style={{display: "inline-block"}}>Load More</button>
+        <button onClick={handleLoad} type="submit" className="btn btn-primary mx-2" style={{display: "inline-block"}}>Load More</button>
         </form>
         </div>
     );
